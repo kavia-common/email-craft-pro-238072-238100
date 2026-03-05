@@ -5,9 +5,13 @@ import HomePage from "@/app/page";
 import { AppShell } from "@/components/AppShell";
 
 // next/link can render as an anchor for our test purposes.
+type MockLinkProps = React.PropsWithChildren<
+  { href: string } & React.AnchorHTMLAttributes<HTMLAnchorElement>
+>;
+
 vi.mock("next/link", () => {
   return {
-    default: ({ href, children, ...props }: any) => (
+    default: ({ href, children, ...props }: MockLinkProps) => (
       <a href={href} {...props}>
         {children}
       </a>
