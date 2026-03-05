@@ -33,10 +33,7 @@ export default function GeneratorPage() {
       setError("Topic must be at least 3 characters.");
       return;
     }
-    if (keyPoints.trim().length < 3) {
-      setError("Key points must be at least 3 characters.");
-      return;
-    }
+    // key points optional on backend; keep UX permissive
 
     setLoading(true);
     try {

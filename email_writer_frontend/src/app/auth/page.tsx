@@ -58,11 +58,14 @@ function AuthPageInner() {
           ? await registerUser({ name: name.trim(), email: email.trim(), password })
           : await loginUser({ email: email.trim(), password });
 
-      if (!res?.token) {
-        throw new Error("Login succeeded but no token was returned.");
+      if (!res?.access_token) {
+        throw new Error("Login succeeded but no access_token was returned.");
       }
 
-      setAuth({ token: res.token, user: res.user || { name: name.trim(), email: email.trim() } });
+      setAuth({
+        token: res.access_token,
+        user: { id: res.user_id, name: res.name, email: res.email },
+      });
       setSuccess(mode === "signup" ? "Account created. Logged in!" : "Logged in!");
       router.push(afterLoginPath);
     } catch (err) {

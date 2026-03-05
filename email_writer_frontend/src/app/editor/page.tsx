@@ -69,8 +69,8 @@ export default function EditorPage() {
 
     setLoadingSave(true);
     try {
-      const res = await saveEmailDraft({ subject: subject.trim(), content: content.trim(), tone }, state.token);
-      setNotice(res.ok ? "Saved to history." : "Save request completed.");
+      await saveEmailDraft({ subject: subject.trim(), content: content.trim(), tone }, state.token);
+      setNotice("Saved to history.");
       persistDraft();
     } catch (err) {
       setError(prettyErrorMessage(err));

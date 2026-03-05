@@ -34,7 +34,7 @@ export default function HistoryPage() {
     setLoading(true);
     try {
       const res = await listEmails(state.token);
-      setItems(Array.isArray(res) ? res : []);
+      setItems(Array.isArray(res?.items) ? res.items : []);
     } catch (err) {
       setError(prettyErrorMessage(err));
     } finally {
@@ -47,10 +47,10 @@ export default function HistoryPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.token]);
 
-  async function onDelete(emailId: string | number | undefined) {
+  async function onDelete(emailId: string | undefined) {
     if (!state.token) return;
-    if (emailId === undefined || emailId === null) {
-      setError("Cannot delete: missing email_id.");
+    if (!emailId) {
+      setError("Cannot delete: missing email id.");
       return;
     }
     setError(null);
@@ -109,7 +109,7 @@ export default function HistoryPage() {
           {items.map((it, idx) => {
             const title = it.subject || `Saved Draft #${idx + 1}`;
             return (
-              <div key={String(it.email_id ?? idx)} className="card">
+              <div key={it.id} className="card">
                 <div className="card-inner">
                   <div
                     style={{
@@ -147,11 +147,7 @@ export default function HistoryPage() {
                       <Link className="btn" href="/editor">
                         Open Editor
                       </Link>
-                      <button
-                        className="btn btn-danger"
-                        type="button"
-                        onClick={() => onDelete(it.email_id)}
-                      >
+                      <button className="btn btn-danger" type="button" onClick={() => onDelete(it.id)}>
                         Delete
                       </button>
                     </div>
